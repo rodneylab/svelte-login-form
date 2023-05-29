@@ -13,7 +13,7 @@
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/rodneylab/svelte-login-form)
 
-Demo code for creating serverless WebSockets in SvelteKit with Ably for a game or real-time chat. The code accompanies the <a href="https://rodneylab.com/svelte-login-form-example/">post on using SvelteKit with Ably</a>. If you have any questions, please drop a comment at the bottom of that page.
+Demo code for creating a login and signup form in Svelte following some best practices. The code accompanies the <a href="https://rodneylab.com/svelte-login-form-example/">Svelte login form example post</a>. If you have any questions, please drop a comment at the bottom of that page.
 
 ## Building and previewing the site
 
