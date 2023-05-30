@@ -109,7 +109,7 @@
 
 			{#if passwordTouched}
 				<label for="password-strength">Password strength: {strengthDescription}</label>
-				<progress id="password-strength" value={score} max="4" />
+				<meter id="password-strength" value={score} low="1.9" high="2.9" optimum="4" max="4" />
 				{#if warning}
 					<span class="warning"> {warning}</span>
 					<ul>
@@ -155,21 +155,20 @@
 		font-weight: var(--font-weight-medium);
 	}
 
-	progress[value] {
-		margin-bottom: var(--spacing-3);
+	meter {
 		width: 100%;
 	}
 
-	progress[value='1'] {
-		accent-color: var(--colour-warning);
+	meter::-webkit-meter-even-less-good-value {
+		background-color: var(--colour-warning);
 	}
 
-	progress[value='2'] {
-		accent-color: var(--colour-alert);
+	meter::-webkit-meter-suboptimum-value {
+		background-color: var(--colour-alert);
 	}
-	progress[value='3'],
-	progress[value='4'] {
-		accent-color: var(--colour-info);
+
+	meter::-webkit-meter-optimum-value {
+		background-color: var(--colour-info);
 	}
 
 	input {
