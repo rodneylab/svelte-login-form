@@ -41,6 +41,7 @@
 				type="password"
 				required
 				name="password"
+				autocomplete="current-password"
 			/>
 			{#if authenticationError}
 				<small id="authentication-error" class="error-text"
