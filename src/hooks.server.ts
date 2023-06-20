@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { db } from '$lib/utilities/db';
 
 export const handle = async ({ event, resolve }) => {
-	event.locals.db = new PrismaClient();
+	event.locals.db = db;
 
 	return resolve(event);
 };
