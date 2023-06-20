@@ -80,7 +80,7 @@
 			<label for="password">Password</label>
 			<input
 				bind:value={password}
-				on:keydown={() => {
+				on:change={() => {
 					passwordTouched = true;
 				}}
 				id="password"
