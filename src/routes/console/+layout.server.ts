@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 
-export const load: PageServerLoad = async function load({ cookies }) {
+export const load: LayoutServerLoad = async function load({ cookies }) {
 	const session = cookies.get('session');
 
 	if (!session) {
