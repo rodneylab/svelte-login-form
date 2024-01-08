@@ -14,7 +14,7 @@ export const actions: Actions = {
 		const session = cookies.get('session');
 		const { sessionID } = JSON.parse(session!);
 		if (!session || !sessionID) {
-			throw redirect(303, '/signup');
+			redirect(303, '/signup');
 		}
 
 		const errors = { email: '', password: '' };
@@ -74,7 +74,7 @@ export const actions: Actions = {
 		// set user email on session cookie
 		setSessionUser({ cookies, email, sessionID });
 
-		throw redirect(303, '/console');
+		redirect(303, '/console');
 	}
 };
 

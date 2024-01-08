@@ -7,6 +7,6 @@ export const actions: Actions = {
 		if (session) {
 			cookies.delete('session', { path: '/' });
 		}
-		throw redirect(303, '/');
+		redirect(303, '/');
 	}
 };
