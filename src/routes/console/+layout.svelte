@@ -1,11 +1,12 @@
 <script lang="ts">
+	let { children } = $props();
 </script>
 
 <header>
 	<a href="/console/logout">Log out</a>
 </header>
 <div class="wrapper">
-	<slot />
+	{@render children?.()}
 </div>
 
 <style>

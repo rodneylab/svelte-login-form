@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { ActionData } from './$types';
-	export let form: ActionData;
 	import { enhance } from '$app/forms';
 
-	let { email, error } = form ?? {};
-	$: ({ email, error } = form ?? { email: '', error: '' });
+	let { form }: { form: ActionData } = $props();
 
-	$: authenticationError = error === 'authentication';
+	let { email, error } = $state(form ?? { email: '', error: '' });
+
+	let authenticationError = $derived(error === 'authentication');
 </script>
 
 <svelte:head>

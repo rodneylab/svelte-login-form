@@ -8,5 +8,5 @@ export const actions: Actions = {
 			cookies.delete('session', { path: '/' });
 		}
 		redirect(303, '/');
-	}
+	},
 };

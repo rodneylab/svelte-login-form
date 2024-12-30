@@ -1,21 +1,20 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { zxcvbn, zxcvbnOptions, type Score } from '@zxcvbn-ts/core';
+	import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
 	import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common';
 	import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en';
 	import type { ActionData } from './$types';
 
-	export let form: ActionData;
+	let { form }: { form: ActionData } = $props();
 
-	let password = '';
+	let password = $state('');
 	const formDefault = { email: '', errors: { email: '', password: '' } };
-	let { email, errors } = form ?? formDefault;
-	$: ({ email, errors } = form ?? formDefault);
+	let { email, errors } = $derived(form ?? formDefault);
 
-	let passwordTouched = false;
+	let passwordTouched = $state(false);
 
-	let emailError = (errors?.email.length ?? 0) > 0;
-	let passwordError = (errors?.password.length ?? 0) > 0;
+	let emailError = $derived((errors?.email.length ?? 0) > 0);
+	let passwordError = $derived((errors?.password.length ?? 0) > 0);
 
 	const { translations } = zxcvbnEnPackage;
 	const { adjacencyGraphs: graphs, dictionary: commonDictionary } = zxcvbnCommonPackage;
@@ -24,29 +23,31 @@
 	const options = {
 		translations,
 		graphs,
-		dictionary: { ...commonDictionary, ...englishDictionary }
+		dictionary: { ...commonDictionary, ...englishDictionary },
 	};
 	zxcvbnOptions.setOptions(options);
 
-	$: ({
+	let {
 		score,
-		feedback: { warning, suggestions }
-	} = zxcvbn(password));
+		feedback: { warning, suggestions },
+	} = $derived(zxcvbn(password));
 
-	let strengthDescription = 'Low';
-	$: switch (score) {
-		case 3:
-			strengthDescription = 'OK';
-			break;
-		case 4:
-			strengthDescription = 'Good';
-			break;
-		case 0:
-		case 1:
-		case 2:
-		default:
-			strengthDescription = 'Low';
-	}
+	let strengthDescription = $state('Low');
+	$effect(() => {
+		switch (score) {
+			case 3:
+				strengthDescription = 'OK';
+				break;
+			case 4:
+				strengthDescription = 'Good';
+				break;
+			case 0:
+			case 1:
+			case 2:
+			default:
+				strengthDescription = 'Low';
+		}
+	});
 </script>
 
 <svelte:head>
@@ -80,7 +81,7 @@
 			<label for="password">Password</label>
 			<input
 				bind:value={password}
-				on:change={() => {
+				onchange={() => {
 					passwordTouched = true;
 				}}
 				id="password"
@@ -109,7 +110,8 @@
 
 			{#if passwordTouched}
 				<label for="password-strength">Password strength: {strengthDescription}</label>
-				<meter id="password-strength" value={score} low="1.9" high="2.9" optimum="4" max="4" />
+				<meter id="password-strength" value={score} low="1.9" high="2.9" optimum="4" max="4"
+				></meter>
 				{#if warning}
 					<span class="warning"> {warning}</span>
 					<ul>
