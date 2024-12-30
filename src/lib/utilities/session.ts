@@ -7,14 +7,14 @@ export function createSession(cookies: Cookies) {
 		path: '/',
 		expires: new Date(Temporal.Now.plainDateTimeISO().add({ hours: 2 }).toString()),
 		sameSite: 'lax',
-		httpOnly: true
+		httpOnly: true,
 	});
 }
 
 export function setSessionUser({
 	cookies,
 	email,
-	sessionID
+	sessionID,
 }: {
 	cookies: Cookies;
 	email: string;
@@ -24,6 +24,6 @@ export function setSessionUser({
 		path: '/',
 		expires: new Date(Temporal.Now.plainDateTimeISO().add({ hours: 2 }).toString()),
 		sameSite: 'lax',
-		httpOnly: true
+		httpOnly: true,
 	});
 }

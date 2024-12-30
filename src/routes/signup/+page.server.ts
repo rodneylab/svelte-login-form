@@ -12,8 +12,11 @@ export const actions: Actions = {
 		const passwordConfirm = form.get('password-confirm');
 
 		const session = cookies.get('session');
-		const { sessionID } = JSON.parse(session!);
-		if (!session || !sessionID) {
+		if (!session) {
+			redirect(303, '/signup');
+		}
+		const { sessionID } = JSON.parse(session);
+		if (!sessionID) {
 			redirect(303, '/signup');
 		}
 
@@ -22,14 +25,14 @@ export const actions: Actions = {
 		if (typeof email !== 'string') {
 			return fail(400, {
 				email: '',
-				errors: { ...errors, email: 'Please enter an email address.' }
+				errors: { ...errors, email: 'Please enter an email address.' },
 			});
 		}
 
 		if (!emailRegex.test(email.trim())) {
 			return fail(400, {
 				email,
-				errors: { ...errors, email: 'Check your entered email address is right.' }
+				errors: { ...errors, email: 'Check your entered email address is right.' },
 			});
 		}
 
@@ -38,8 +41,8 @@ export const actions: Actions = {
 				email,
 				errors: {
 					...errors,
-					password: 'Please enter a password between 8 and 128 characters long.'
-				}
+					password: 'Please enter a password between 8 and 128 characters long.',
+				},
 			});
 		}
 
@@ -49,8 +52,8 @@ export const actions: Actions = {
 				errors: {
 					...errors,
 					password:
-						'Passwords did not match. Please enter password, then confirm entering the same value.'
-				}
+						'Passwords did not match. Please enter password, then confirm entering the same value.',
+				},
 			});
 		}
 
@@ -59,23 +62,23 @@ export const actions: Actions = {
 				email,
 				errors: {
 					...errors,
-					email: 'You might already have an account, did you mean to log in instead?'
-				}
+					email: 'You might already have an account, did you mean to log in instead?',
+				},
 			});
 		}
 
 		await locals.db.user.create({
 			data: {
 				username: email,
-				passwordHash: await argon2.hash(password)
-			}
+				passwordHash: await argon2.hash(password),
+			},
 		});
 
 		// set user email on session cookie
 		setSessionUser({ cookies, email, sessionID });
 
 		redirect(303, '/console');
-	}
+	},
 };
 
 export const load: PageServerLoad = async function load({ cookies }) {

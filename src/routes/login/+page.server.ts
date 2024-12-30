@@ -10,27 +10,30 @@ export const actions: Actions = {
 		const password = form.get('password');
 
 		const session = cookies.get('session');
-		const { sessionID } = JSON.parse(session!);
-		if (!session || !sessionID) {
+		if (!session) {
+			redirect(303, '/signup');
+		}
+		const { sessionID } = JSON.parse(session);
+		if (!sessionID) {
 			redirect(303, '/signup');
 		}
 
 		if (typeof email !== 'string') {
 			return fail(400, {
 				email: '',
-				error: 'authentication'
+				error: 'authentication',
 			});
 		}
 
 		const user = await locals.db.user.findUnique({
 			where: { username: email },
-			include: { authnDevices: true }
+			include: { authnDevices: true },
 		});
 
 		if (typeof password !== 'string' || !user) {
 			return fail(400, {
 				email,
-				error: 'authentication'
+				error: 'authentication',
 			});
 		}
 
@@ -39,7 +42,7 @@ export const actions: Actions = {
 		if (!validPassword) {
 			return fail(400, {
 				email,
-				error: 'authentication'
+				error: 'authentication',
 			});
 		}
 
@@ -47,7 +50,7 @@ export const actions: Actions = {
 		setSessionUser({ cookies, email, sessionID });
 
 		redirect(303, '/console');
-	}
+	},
 };
 
 export const load: PageServerLoad = async function load({ cookies }) {
